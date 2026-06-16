@@ -7,6 +7,7 @@
 #import "AppDelegate.h"
 #import "BilliardsView.h"
 #import "NewGameController.h"
+#import "PreferencesController.h"
 
 @implementation AppDelegate
 
@@ -55,6 +56,14 @@
 
   [appMenu addItem:[NSMenuItem separatorItem]];
 
+  NSMenuItem *prefsItem = [[NSMenuItem alloc] initWithTitle:@"Preferences…"
+                                                     action:@selector(showPreferences:)
+                                              keyEquivalent:@""];
+  [prefsItem setTarget:self];
+  [appMenu addItem:prefsItem];
+
+  [appMenu addItem:[NSMenuItem separatorItem]];
+
   NSMenuItem *quitItem = [[NSMenuItem alloc] initWithTitle:@"Quit Billiards"
                                                     action:@selector(terminate:)
                                              keyEquivalent:@"q"];
@@ -81,6 +90,14 @@
 
   [appMenu addItem:[NSMenuItem separatorItem]];
 
+  NSMenuItem *prefsItem2 = [[NSMenuItem alloc] initWithTitle:@"Preferences…"
+                                                      action:@selector(showPreferences:)
+                                               keyEquivalent:@""];
+  [prefsItem2 setTarget:self];
+  [appMenu addItem:prefsItem2];
+
+  [appMenu addItem:[NSMenuItem separatorItem]];
+
   NSMenuItem *quitItem = [[NSMenuItem alloc] initWithTitle:@"Quit Billiards"
                                                     action:@selector(terminate:)
                                              keyEquivalent:@"q"];
@@ -96,6 +113,10 @@
   NewGameController *controller = [[NewGameController alloc] init];
   GameType type = [controller runModal];
   [_view newGameWithType:type];
+}
+
+- (void)showPreferences:(id)sender {
+  [[PreferencesController sharedController] showWindow:nil];
 }
 
 @end

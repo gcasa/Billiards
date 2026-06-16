@@ -11,6 +11,12 @@
 #import "GameRules.h"
 #import "Ball.h"
 #import "Vec2.h"
+#import "PreferencesController.h"
+
+static NSString *BilliardsCurrentTableImageName(void) {
+    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:BilliardsTableColourDefaultsKey];
+    return name ? name : @"billiard_table";
+}
 
 static const CGFloat BilliardsTableImageWidth  = 1438.0;
 static const CGFloat BilliardsTableImageHeight = 889.0;
@@ -61,7 +67,7 @@ static NSColor *BilliardsBallColor(int number) {
 @implementation BilliardsView
 
 + (NSSize)preferredViewSize {
-  NSImage *image = [NSImage imageNamed:@"billiard_table"];
+  NSImage *image = [NSImage imageNamed:BilliardsCurrentTableImageName()];
   if (image) return [image size];
   return NSMakeSize(900, 520);
 }
@@ -78,7 +84,12 @@ static NSColor *BilliardsBallColor(int number) {
 - (id)initWithFrame:(NSRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
-    _tableImage = [NSImage imageNamed:@"billiard_table"];
+    _tableImage = [NSImage imageNamed:BilliardsCurrentTableImageName()];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(tableColourDidChange:)
+                                                 name:BilliardsTableColourDidChangeNotification
+                                               object:nil];
 
     NSRect play = [self playRectForBounds:[self bounds]];
 
@@ -99,7 +110,18 @@ static NSColor *BilliardsBallColor(int number) {
   return self;
 }
 
-- (void)dealloc { [_timer invalidate]; }
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [_timer invalidate];
+}
+
+- (void)tableColourDidChange:(NSNotification *)note {
+  NSString *imageName = [note userInfo][@"imageName"];
+  if (imageName) {
+    _tableImage = [NSImage imageNamed:imageName];
+    [self setNeedsDisplay:YES];
+  }
+}
 
 - (BOOL)isFlipped { return NO; }
 
