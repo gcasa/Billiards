@@ -11,6 +11,7 @@ Billiards_OBJC_FILES = \
 	Billiards/GameState.m \
 	Billiards/NewGameController.m \
 	Billiards/PhysicsEngine.m \
+	Billiards/SoundEffects.m \
 	Billiards/Table.m
 
 Billiards_RESOURCE_FILES = \

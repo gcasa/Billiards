@@ -11,6 +11,7 @@
 #import "GameRules.h"
 #import "Ball.h"
 #import "Vec2.h"
+#import "SoundEffects.h"
 
 static const CGFloat BilliardsTableImageWidth  = 1438.0;
 static const CGFloat BilliardsTableImageHeight = 889.0;
@@ -155,6 +156,7 @@ static NSColor *BilliardsBallColor(int number) {
   // Reset per-shot tracking BEFORE setting velocity so physics picks it up cleanly
   [_state beginShot];
   [cue setVelocity:Vec2Mul(direction, power * 8.0)];
+  if (power > 0.5) [[SoundEffects sharedEffects] playCueHitWithPower:power];
 }
 
 // ---------------------------------------------------------------------------

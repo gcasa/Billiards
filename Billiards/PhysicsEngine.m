@@ -9,6 +9,7 @@
 #import "Table.h"
 #import "Ball.h"
 #import "Vec2.h"
+#import "SoundEffects.h"
 
 @implementation PhysicsEngine
 
@@ -101,6 +102,8 @@
       CGFloat velAlongNormal = Vec2Dot(relVel, normal);
 
       if (velAlongNormal > 0) continue;
+
+      [[SoundEffects sharedEffects] playBallCollisionWithSpeed:-velAlongNormal];
 
       CGFloat impulse    = -(1.0 + _restitution) * velAlongNormal / 2.0;
       Vec2    impulseVec = Vec2Mul(normal, impulse);
